@@ -116,5 +116,50 @@ function(cmr_allegro_cmaker)
   # Configure library.
   #
   add_subdirectory(${lib_SRC_DIR} ${lib_BUILD_SRC_DIR})
+  
+  #-----------------------------------------------------------------------
+  # Store static dependencies.
+  #
+  if(NOT SHARED)
+    # Get list libraries to linking with.
+    set(LIB_TARGETS
+      allegro_monolith
+      allegro
+      allegro_primitives
+      allegro_image
+      allegro_font
+      allegro_audio
+      allegro_acodec
+      allegro_ttf
+      allegro_color
+      allegro_memfile
+      allegro_physfs
+      allegro_dialog
+      allegro_video
+      allegro_main
+    )
+  
+    # Store list libs for each component to file in CMake support dir.
+    set(cmake_support_files_install_dir
+      "lib${LIB_SUFFIX}/cmake/Allegro"
+    )
+    file(MAKE_DIRECTORY ${cmake_support_files_install_dir})
 
+    foreach(lib_target ${LIB_TARGETS})
+      if(TARGET ${lib_target})
+        get_target_property(link_with ${lib_target} static_link_with)
+        if(link_with)
+          cmr_print_message("Write file ${lib_target}_link_with.cmake")
+          file(WRITE
+            "${lib_BUILD_DIR}/${lib_target}_link_with.cmake"
+            "set(${lib_target}_LINK_WITH ${link_with})"
+          )
+          install(
+            FILES "${lib_BUILD_DIR}/${lib_target}_link_with.cmake"
+            DESTINATION "${cmake_support_files_install_dir}"
+          )
+        endif()
+      endif()
+    endforeach()
+  endif()
 endfunction()

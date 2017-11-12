@@ -64,6 +64,16 @@
 #   Allegro_${COMPONENT}_LIBRARY        Contains the libraries for the
 #                                       specified Allegro "component".
 #
+# Useful variables:
+#
+#   Allegro_BUILD_TYPE                  Set to "debug" or "profile" in any case
+#                                       to get the library of the appropriate
+#                                       type. Default is empty which means
+#                                       release type.
+#
+#   Allegro_USE_STATIC_LIBS             Set to ON to force the use of the static
+#                                       libraries. Default is OFF.
+#
 
 
 macro(_allegro_msg msg)
@@ -115,10 +125,22 @@ macro(_allegro_add_component component only_includes)
         PATH_SUFFIXES "lib"
         HINTS ENV ALLEGRO_DIR
       )
+
+      if(Allegro_USE_STATIC_LIBS)
+        find_file(Allegro_${component}_LINK_WITH_FILE
+          NAMES "cmake/Allegro/allegro_${component}_link_with.cmake"
+          PATH_SUFFIXES "lib"
+          HINTS ENV ALLEGRO_DIR
+        )
+      endif()
     endif()
 
     if(Allegro_${component}_LIBRARY)
       list(APPEND Allegro_LIBRARIES ${Allegro_${component}_LIBRARY})
+      if(Allegro_${component}_LINK_WITH_FILE)
+        include(${Allegro_${component}_LINK_WITH_FILE})
+        list(APPEND Allegro_LIBRARIES ${allegro_${component}_LINK_WITH})
+      endif()
     endif()
     if(Allegro_${component}_LIBRARY OR ${only_includes})
       list(APPEND Allegro_INCLUDE_DIRS ${Allegro_${component}_INCLUDE_DIR})
@@ -147,8 +169,8 @@ macro(_find_allegro)
     set(name "Allegro")
   endif()
   
-  set(lib_name ${name})
-  string(TOLOWER ${lib_name} lib_name)
+  string(TOLOWER ${name} name_tolower)
+  set(lib_name ${name_tolower})
 
   _allegro_append_lib_type_suffix(lib_name)
   _allegro_append_lib_linkage_suffix(lib_name)
@@ -164,10 +186,22 @@ macro(_find_allegro)
     PATH_SUFFIXES "lib"
     HINTS ENV ALLEGRO_DIR
   )
+  
+  if(Allegro_USE_STATIC_LIBS)
+    find_file(Allegro_LINK_WITH_FILE
+      NAMES "cmake/Allegro/${name_tolower}_link_with.cmake"
+      PATH_SUFFIXES "lib"
+      HINTS ENV ALLEGRO_DIR
+    )
+  endif()
 
   if(Allegro_INCLUDE_DIR AND Allegro_LIBRARY)
     list(APPEND Allegro_INCLUDE_DIRS ${Allegro_INCLUDE_DIR})
     list(APPEND Allegro_LIBRARIES ${Allegro_LIBRARY})
+    if(Allegro_LINK_WITH_FILE)
+      include(${Allegro_LINK_WITH_FILE})
+      list(APPEND Allegro_LIBRARIES ${${name_tolower}_LINK_WITH})
+    endif()
     set(Allegro_FOUND true)
     _allegro_msg("Found ${name}")
   else()

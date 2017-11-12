@@ -185,8 +185,6 @@ function(lib_cmaker_allegro)
     WANT_TESTS
   )
 
-  cmr_print_var_value(LIB_VARS)
-
   foreach(d ${LIB_VARS})
     if(DEFINED ${d})
       list(APPEND lcm_CMAKE_ARGS

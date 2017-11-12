@@ -42,7 +42,7 @@ set(LIBCMAKER_SRC_DIR "${PROJECT_SOURCE_DIR}/cmake/LibCMaker")
 #-----------------------------------------------------------------------
 
 # Standard CMake vars.
-set(BUILD_SHARED_LIBS ON)
+#set(BUILD_SHARED_LIBS ON)
 
 #set(SKIP_INSTALL_HEADERS ON)
 #set(SKIP_INSTALL_LIBRARIES ON)
