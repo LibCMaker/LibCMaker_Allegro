@@ -59,7 +59,9 @@ set(BUILD_DIR "${PROJECT_BINARY_DIR}/build")
 
 set(ENV{ALLEGRO_DIR} "${CMAKE_INSTALL_PREFIX}")
 
-set(SKIP_BUILD_GRADLE_PROJECT ON)
+if(ANDROID)
+  set(SKIP_BUILD_GRADLE_PROJECT ON)
+endif()
 
 # Library specific vars and options.
 
