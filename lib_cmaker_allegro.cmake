@@ -102,6 +102,12 @@ function(lib_cmaker_allegro)
     option(SHARED "Build shared libraries" ${build_shared_al_lib})
   endif()
 
+  if(DEFINED SKIP_BUILD_GRADLE_PROJECT)
+    list(APPEND lcm_CMAKE_ARGS
+      -DSKIP_BUILD_GRADLE_PROJECT=${SKIP_BUILD_GRADLE_PROJECT}
+    )
+  endif()
+
   if(DEFINED ANDROID_HOME)
     list(APPEND lcm_CMAKE_ARGS
       -DANDROID_HOME=${ANDROID_HOME}

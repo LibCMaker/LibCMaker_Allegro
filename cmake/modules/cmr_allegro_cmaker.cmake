@@ -101,7 +101,7 @@ function(cmr_allegro_cmaker)
   # Overwrite <src>/android/CMakeLists.txt with empty file
   # to exclude gradle project building.
   #
-  if(ANDROID)
+  if(ANDROID AND SKIP_BUILD_GRADLE_PROJECT)
     cmr_print_message(
       "Overwrite <src>/android/CMakeLists.txt with empty file in unpacked sources.")
     execute_process(
