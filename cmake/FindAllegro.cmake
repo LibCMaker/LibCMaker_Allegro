@@ -158,6 +158,7 @@ macro(_allegro_add_component component only_includes)
   mark_as_advanced(
     Allegro_${component}_INCLUDE_DIR
     Allegro_${component}_LIBRARY
+    Allegro_${component}_LINK_WITH_FILE
   )
 endmacro()
 
@@ -212,6 +213,7 @@ macro(_find_allegro)
   mark_as_advanced(
     Allegro_INCLUDE_DIR
     Allegro_LIBRARY
+    Allegro_LINK_WITH_FILE
   )
 endmacro()
 
