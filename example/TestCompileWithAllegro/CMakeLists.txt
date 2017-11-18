@@ -171,6 +171,10 @@ lib_cmaker_allegro(
 # Configure for find_package.
 #-----------------------------------------------------------------------
 
+# Set CMake's search path for find_package(), find_program(), find_library(),
+# find_file(), and find_path() commands.
+list(APPEND CMAKE_PREFIX_PATH "${CMAKE_INSTALL_PREFIX}")
+
 if(ANDROID)
   list(APPEND CMAKE_FIND_ROOT_PATH "${CMAKE_INSTALL_PREFIX}")
 endif()
